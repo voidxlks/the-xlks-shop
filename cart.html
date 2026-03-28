@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XLKS Shop - Cart</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: white;
+    }
+
+    header {
+      background: #111;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      border-bottom: 2px solid #222;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .item button {
+      background: red;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .total {
+      font-size: 20px;
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .checkout {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: #00ffcc;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .checkout:hover {
+      background: #00ccaa;
+    }
+
+    .empty {
+      text-align: center;
+      margin-top: 40px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<header>🛒 Your Cart</header>
+
+<div class="container" id="cart-container"></div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const container = document.getElementById("cart-container");
+
+  function renderCart() {
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+      container.innerHTML = "<div class='empty'>Your cart is empty</div>";
+      return;
+    }
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      total += item.price;
+
+      const div = document.createElement("div");
+      div.className = "item";
+
+      div.innerHTML = `
+        <span>${item.name} - $${item.price.toFixed(2)}</span>
+        <button onclick="removeItem(${index})">Remove</button>
+      `;
+
+      container.appendChild(div);
+    });
+
+    const totalDiv = document.createElement("div");
+    totalDiv.className = "total";
+    totalDiv.innerText = "Total: $" + total.toFixed(2);
+
+    container.appendChild(totalDiv);
+
+    const checkoutBtn = document.createElement("button");
+    checkoutBtn.className = "checkout";
+    checkoutBtn.innerText = "Checkout";
+
+    checkoutBtn.onclick = () => {
+      alert("Checkout complete! (demo)");
+      localStorage.removeItem("cart");
+      location.reload();
+    };
+
+    container.appendChild(checkoutBtn);
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  renderCart();
+</script>
+
+</body>
+</html>
