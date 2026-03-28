@@ -5,21 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>XLKS Shop</title>
 
+  <!-- Your blue theme -->
+  <link rel="stylesheet" href="blue.css">
+
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: white;
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+      font-weight: bold;
     }
 
-    header {
-      background: #111;
-      padding: 15px;
+    .top-buttons {
       text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-      border-bottom: 2px solid #222;
+      margin-bottom: 20px;
+    }
+
+    .top-buttons button {
+      margin: 5px;
     }
 
     .container {
@@ -33,16 +36,9 @@
     }
 
     .card {
-      background: #1a1a1a;
-      border-radius: 10px;
       padding: 15px;
+      border-radius: 10px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      transition: 0.2s;
-    }
-
-    .card:hover {
-      transform: scale(1.03);
     }
 
     .card img {
@@ -51,32 +47,18 @@
     }
 
     .price {
-      color: #00ffcc;
       margin: 10px 0;
       font-size: 18px;
+      color: #00cfff;
     }
 
-    button {
-      background: #00ffcc;
-      border: none;
-      padding: 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #00ccaa;
-    }
-
-    .cart {
+    .cart-count {
       position: fixed;
       top: 10px;
       right: 10px;
-      background: #222;
+      background: #111;
       padding: 10px 15px;
       border-radius: 8px;
-      font-size: 14px;
     }
   </style>
 </head>
@@ -84,44 +66,64 @@
 
 <header>🛒 XLKS Shop</header>
 
-<div class="cart">
+<div class="cart-count">
   Cart: <span id="cart-count">0</span>
 </div>
 
+<!-- 🔥 Navigation Buttons -->
+<div class="top-buttons">
+  <button onclick="location.href='cart.html'">🛒 Cart</button>
+  <button onclick="location.href='page2.html'">📄 Info</button>
+  <button onclick="location.href='addons/extra-items.html'">✨ Extras</button>
+</div>
+
 <div class="container">
-  <div class="products">
-
-    <div class="card">
-      <img src="https://via.placeholder.com/200" alt="Item">
-      <h3>Starter Item</h3>
-      <p class="price">$5.00</p>
-      <button onclick="addToCart()">Add to Cart</button>
-    </div>
-
-    <div class="card">
-      <img src="https://via.placeholder.com/200" alt="Item">
-      <h3>Cool Product</h3>
-      <p class="price">$10.00</p>
-      <button onclick="addToCart()">Add to Cart</button>
-    </div>
-
-    <div class="card">
-      <img src="https://via.placeholder.com/200" alt="Item">
-      <h3>Premium Item</h3>
-      <p class="price">$20.00</p>
-      <button onclick="addToCart()">Add to Cart</button>
-    </div>
-
-  </div>
+  <div class="products" id="products"></div>
 </div>
 
 <script>
-  let cart = 0;
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  function addToCart() {
-    cart++;
-    document.getElementById("cart-count").innerText = cart;
+  function updateCartUI() {
+    document.getElementById("cart-count").innerText = cart.length;
   }
+
+  function addToCart(item) {
+    cart.push(item);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartUI();
+    alert(item.name + " added to cart!");
+  }
+
+  // 🧠 Load items dynamically (from JSON OR fallback)
+  const items = [
+    { name: "Starter Item", price: 5, image: "https://via.placeholder.com/200" },
+    { name: "Cool Product", price: 10, image: "https://via.placeholder.com/200" },
+    { name: "Premium Item", price: 20, image: "https://via.placeholder.com/200" },
+    { name: "XLKS Hoodie", price: 35, image: "https://via.placeholder.com/200" },
+    { name: "Gaming Mouse", price: 25, image: "https://via.placeholder.com/200" },
+    { name: "Mechanical Keyboard", price: 60, image: "https://via.placeholder.com/200" }
+  ];
+
+  const container = document.getElementById("products");
+
+  items.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <img src="${item.image}">
+      <h3>${item.name}</h3>
+      <p class="price">$${item.price}</p>
+      <button>Add to Cart</button>
+    `;
+
+    div.querySelector("button").onclick = () => addToCart(item);
+
+    container.appendChild(div);
+  });
+
+  updateCartUI();
 </script>
 
 </body>
