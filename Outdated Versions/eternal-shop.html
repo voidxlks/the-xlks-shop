@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XLKS Shop v1</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #181818;
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      padding: 15px;
+      font-size: 22px;
+      background: #222;
+    }
+
+    .notice {
+      color: orange;
+      margin: 10px;
+      font-size: 14px;
+    }
+
+    .products {
+      display: block;
+      padding: 20px;
+    }
+
+    .item {
+      background: #222;
+      margin: 10px auto;
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #444;
+      color: white;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #666;
+    }
+
+    .top-buttons {
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>🛒 XLKS Shop (v1)</header>
+
+<div class="notice">
+  You are viewing an older version of the shop.
+</div>
+
+<div class="top-buttons">
+  <button onclick="location.href='../index.html'">New Shop</button>
+  <button onclick="location.href='../cart.html'">Cart</button>
+</div>
+
+<div class="products">
+
+  <div class="item">
+    <h3>Starter Item</h3>
+    <p>$5</p>
+    <button onclick="addToCart('Starter Item', 5)">Add</button>
+  </div>
+
+  <div class="item">
+    <h3>Cool Product</h3>
+    <p>$10</p>
+    <button onclick="addToCart('Cool Product', 10)">Add</button>
+  </div>
+
+  <div class="item">
+    <h3>Premium Item</h3>
+    <p>$20</p>
+    <button onclick="addToCart('Premium Item', 20)">Add</button>
+  </div>
+
+</div>
+
+<script>
+function addToCart(name, price){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push({name: name, price: price});
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(name + " added to cart");
+}
+</script>
+
+</body>
+</html>s
